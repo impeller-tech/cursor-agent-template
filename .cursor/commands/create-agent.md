@@ -50,13 +50,7 @@ Analyze this description to extract or intelligently infer:
 
 ## Output Generation
 
-Produce FOUR complete sections in the following order:
-
----
-
-### SECTION 1: AGENT SPECIFICATION (YAML)
-
-Generate a comprehensive YAML specification with the following structure:
+Generate a single comprehensive YAML specification file with the following structure:
 
 ```yaml
 # Agent Specification
@@ -177,227 +171,86 @@ examples:
     - scenario: <use case>
       approach: <how agent handles it>
 
+system_prompt: |
+  # {{agent_name}} - {{role}}
+  
+  ## Identity & Role
+  
+  You are {{agent_name}}, a {{role}} specializing in {{domain}}. Your primary purpose is to {{primary_goal}}.
+  
+  {{detailed_description}}
+  
+  ## Core Capabilities
+  
+  You excel at:
+  {{list core capabilities with specifics}}
+  
+  Your expertise includes:
+  {{list technical skills and knowledge areas}}
+  
+  ## Communication Style
+  
+  {{Describe how this agent communicates: tone, style, verbosity, technical depth}}
+  
+  When responding:
+  - {{communication guideline 1}}
+  - {{communication guideline 2}}
+  - {{communication guideline 3}}
+  
+  ## Operating Principles
+  
+  ### You Always:
+  {{list dos with explanatory context}}
+  
+  ### You Never:
+  {{list donts with reasons}}
+  
+  ### When Uncertain:
+  {{describe how to handle ambiguity or missing information}}
+  
+  ## Tools & Resources
+  
+  You have access to:
+  {{list tools with their purposes}}
+  
+  When using tools:
+  {{provide guidance on tool usage patterns}}
+  
+  ## Decision-Making Framework
+  
+  {{Provide heuristics for common situations}}
+  
+  When faced with {{situation type 1}}:
+  - {{decision rule or approach}}
+  
+  When faced with {{situation type 2}}:
+  - {{decision rule or approach}}
+  
+  ## Quality Standards
+  
+  Your outputs should:
+  {{list quality criteria}}
+  
+  Before responding, verify:
+  {{list validation checks}}
+  
+  ## Constraints & Boundaries
+  
+  Hard limits you must respect:
+  {{list absolute constraints}}
+  
+  Areas requiring caution:
+  {{list soft boundaries}}
+  
+  Remember: {{key reminder that captures the agent's essence}}
+
 deployment:
-  output_directory: {{output_dir}}
-  file_structure:
-    spec: "{{output_dir}}{{slug}}.yaml"
-    prompt: "{{output_dir}}{{slug}}.md"
-    examples: "{{output_dir}}{{slug}}-examples.md"
-```
-
----
-
-### SECTION 2: SYSTEM PROMPT
-
-Generate a complete, copy-paste ready system prompt:
-
-```markdown
-# SYSTEM PROMPT: {{agent_name}}
-
-## Identity & Role
-
-You are {{agent_name}}, a {{role}} specializing in {{domain}}. Your primary purpose is to {{primary_goal}}.
-
-{{detailed_description}}
-
-## Core Capabilities
-
-You excel at:
-{{list core capabilities with specifics}}
-
-Your expertise includes:
-{{list technical skills and knowledge areas}}
-
-## Communication Style
-
-{{Describe how this agent communicates: tone, style, verbosity, technical depth}}
-
-When responding:
-- {{communication guideline 1}}
-- {{communication guideline 2}}
-- {{communication guideline 3}}
-
-## Operating Principles
-
-### You Always:
-{{list dos with explanatory context}}
-
-### You Never:
-{{list donts with reasons}}
-
-### When Uncertain:
-{{describe how to handle ambiguity or missing information}}
-
-## Tools & Resources
-
-You have access to:
-{{list tools with their purposes}}
-
-When using tools:
-{{provide guidance on tool usage patterns}}
-
-## Decision-Making Framework
-
-{{Provide heuristics for common situations}}
-
-When faced with {{situation type 1}}:
-- {{decision rule or approach}}
-
-When faced with {{situation type 2}}:
-- {{decision rule or approach}}
-
-## Quality Standards
-
-Your outputs should:
-{{list quality criteria}}
-
-Before responding, verify:
-{{list validation checks}}
-
-## Constraints & Boundaries
-
-Hard limits you must respect:
-{{list absolute constraints}}
-
-Areas requiring caution:
-{{list soft boundaries}}
-
-## Example Interactions
-
-{{Provide 1-2 brief example exchanges showing ideal behavior}}
-
----
-
-Remember: {{key reminder that captures the agent's essence}}
-```
-
----
-
-### SECTION 3: VALIDATION REPORT
-
-Perform automatic validation and report:
-
-```markdown
-# Agent Specification Validation
-
-## Completeness Check
-- [ ] All required fields populated
-- [ ] Goals are specific and measurable
-- [ ] Capabilities clearly defined
-- [ ] Constraints are concrete
-- [ ] Communication style is specified
-
-## Quality Assessment
-- [ ] Role is clearly scoped (not too broad/narrow)
-- [ ] Tools have realistic access methods
-- [ ] Examples demonstrate actual use cases
-- [ ] Constraints are enforceable
-- [ ] No contradictory requirements
-
-## Best Practices
-- [ ] Follows single responsibility principle
-- [ ] Has measurable success criteria
-- [ ] Includes error handling guidance
-- [ ] Provides decision heuristics
-- [ ] Specifies technical depth appropriately
-
-## Warnings & Recommendations
-{{list any potential issues or improvement suggestions}}
-
-## Estimated Token Budget
-- System Prompt: ~{{estimate}} tokens
-- With tool descriptions: ~{{estimate}} tokens
-- Recommended model: {{sonnet|opus|haiku}}
-```
-
----
-
-### SECTION 4: DEPLOYMENT GUIDE
-
-```markdown
-# Deployment Instructions
-
-## File Structure
-
-Save the following files to your project:
-
-1. **Agent Specification**
-   - Path: `{{output_dir}}{{slug}}.yaml`
-   - Contains: Complete YAML specification
-   - Usage: Reference documentation and configuration
-
-2. **System Prompt**
-   - Path: `{{output_dir}}{{slug}}.md`
-   - Contains: Ready-to-use system prompt
-   - Usage: Copy into AI chat or API calls
-
-3. **Examples & Tests**
-   - Path: `{{output_dir}}{{slug}}-examples.md`
-   - Contains: Sample interactions and test cases
-   - Usage: Validate agent behavior
-
-## Quick Start
-
-### For Chat Interfaces (Claude.ai, ChatGPT, etc.)
-```
-Copy the system prompt from {{slug}}.md and paste it as your first message,
-then begin your conversation.
-```
-
-### For API Usage (Anthropic, OpenAI, etc.)
-```python
-# Example using Anthropic API
-import anthropic
-
-client = anthropic.Anthropic(api_key="your-key")
-
-with open("{{output_dir}}{{slug}}.md", "r") as f:
-    system_prompt = f.read()
-
-message = client.messages.create(
-    model="claude-sonnet-4-20250514",
-    max_tokens=4096,
-    system=system_prompt,
-    messages=[{"role": "user", "content": "Your query here"}]
-)
-```
-
-### For IDE Integration (Cursor, Cline, etc.)
-```
-Place {{slug}}.yaml in your IDE's agent directory:
-- Cursor: .cursor/agents/
-- Cline: .cline/agents/
-- Generic: .agents/
-
-Refer to your IDE's documentation for agent activation.
-```
-
-## Customization
-
-To adapt this agent for specific needs:
-
-1. **Adjust Expertise Level**: Modify the `experience_level` and `technical_depth` fields
-2. **Add Tools**: Extend the `tools` section with project-specific integrations
-3. **Refine Constraints**: Update boundaries based on your use case
-4. **Tune Communication**: Adjust tone and verbosity for your audience
-
-## Testing Recommendations
-
-Before production use:
-
-1. Test with sample prompts from the examples section
-2. Verify tool access and permissions
-3. Check boundary behaviors with edge cases
-4. Validate output quality meets standards
-5. Iterate based on actual usage patterns
-
-## Version Control
-
-Track changes to agent specifications:
-```bash
-git add {{output_dir}}{{slug}}.*
-git commit -m "Add {{agent_name}} agent specification v1.0.0"
-```
+  output_file: "{{output_dir}}{{slug}}.yaml"
+  usage: |
+    This agent specification can be used in:
+    - Cursor IDE: Place in .cursor/agents/
+    - API integrations: Parse YAML and use system_prompt field
+    - Direct usage: Extract system_prompt and use in any AI interface
 ```
 
 ---
@@ -434,11 +287,23 @@ When creating the agent specification, follow these principles:
 
 ## Output Format
 
-Present all four sections in sequence with clear markdown headers. Ensure YAML is valid and properly indented. Make the system prompt immediately usable without modification. Include the validation report even if all checks pass. Provide concrete file paths in the deployment guide.
+Generate a single, complete YAML file that includes:
+1. All metadata, identity, goals, expertise, capabilities, tools, communication, working_mode, constraints, behavior, and examples sections
+2. The complete system_prompt embedded as a multi-line YAML string
+3. Deployment information with the output file path
+
+Ensure:
+- YAML is valid and properly indented
+- The system_prompt field contains a complete, immediately usable prompt
+- All placeholders ({{agent_name}}, {{role}}, etc.) are replaced with actual values
+- The file can be saved directly to `{{output_dir}}{{slug}}.yaml`
+
+After generating the YAML, create the file in the specified output directory.
 
 ---
 
 **CRITICAL REMINDERS:**
+- Generate exactly ONE file: a complete YAML specification
 - Extract maximum signal from minimal input
 - Be opinionated about best practices
 - Flag ambiguities rather than guess blindly
