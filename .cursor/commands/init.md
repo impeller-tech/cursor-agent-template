@@ -36,7 +36,7 @@ Scan the directory structure to understand organizational patterns. Projects rev
 
 Identify the technology stack comprehensively. Look beyond just the primary language to understand frameworks, build tools, testing infrastructure, and deployment systems. A React project using TypeScript with Vite and Vitest tells a different story than one using JavaScript with Create React App and Jest.
 
-### Phase 2: Agent Discovery
+### Phase 2: Agent & Skill Discovery
 
 Search for agent definitions in common locations. Check these directories in order of priority:
 
@@ -50,6 +50,10 @@ Search for agent definitions in common locations. Check these directories in ord
 For each discovered agent, extract and analyze its specification. Read YAML frontmatter, markdown descriptions, and any associated documentation. Understand what each agent does, what tools it has access to, what constraints it operates under, and how it communicates.
 
 Map agent relationships and dependencies. Some agents might call other agents as subagents. Some might share tools or operate in sequence. Document these relationships because they reveal the workflow patterns in the project.
+
+Also discover Cursor skills in `.cursor/skills/` (project-specific) and `~/.cursor/skills/` (personal, if accessible).
+
+For each skill, read SKILL.md and extract: name, description, purpose, trigger scenarios, key capabilities, integration points, and related agents or workflows.
 
 ### Phase 3: Convention Discovery
 
@@ -202,9 +206,8 @@ This section is the heart of the document. For each discovered agent, provide co
 ### Overview
 
 Total agents: {{count}}  
-Primary workflow: {{describe how agents typically interact with this project}}
-
-### Agent Registry
+Total skills: {{count}}  
+Primary workflow: {{describe how agents and skills typically interact with this project}}
 
 For each agent, create a subsection:
 
@@ -248,6 +251,39 @@ Audience: {{developers|reviewers|end-users}}
 ```
 {{Show 1-2 example commands or prompts for using this agent}}
 ```
+
+---
+
+### Skill Registry
+
+For each discovered skill, create a subsection:
+
+#### Skill: {{skill_name}}
+
+**Purpose**: {{one-line description}}  
+**Location**: `{{path/to/skill/SKILL.md}}`  
+**Type**: {{task-specific instruction|workflow|pattern}}
+
+**What It Does**
+{{List specific capabilities - what tasks does this skill teach?}}
+- Capability 1: {{description}}
+- Capability 2: {{description}}
+
+**When to Use**
+{{Describe trigger scenarios - when should the AI apply this skill?}}
+- Use case 1: {{description}}
+- Use case 2: {{description}}
+
+**Integration Points**
+{{How this skill relates to the project}}
+- References: {{AGENTS.md sections, other agents, etc.}}
+- Used by: {{which agents or workflows}}
+- Related skills: {{other skills that complement this one}}
+
+**Example Usage**
+\`\`\`
+{{Show example command or prompt that would trigger this skill}}
+\`\`\`
 
 ---
 
@@ -517,6 +553,7 @@ This section describes typical developer workflows and how agents fit into them.
 This AGENTS.md file should be updated when:
 
 - [ ] New agents are added or removed
+- [ ] New skills are added or removed
 - [ ] Project structure changes significantly
 - [ ] New major dependencies are added
 - [ ] Architectural patterns change
@@ -580,6 +617,21 @@ When files change, use this decision tree to determine if AGENTS.md needs updati
 - Was an agent added? Add new registry entry.
 - Was an agent deleted? Remove entry and note in version history.
 - Did agent relationships change? Update interaction map.
+
+### Trigger: New or Modified Skill Files
+
+**Locations to Watch**:
+- `.cursor/skills/**/*`
+- `~/.cursor/skills/**/*` (if accessible)
+
+**Action**: Always update the Skill Registry section when skill files change.
+
+**Analysis Required**:
+- Did a skill's purpose or capabilities change? Update skill description.
+- Was a skill added? Add new registry entry in Skill Registry.
+- Was a skill deleted? Remove entry and note in version history.
+- Did skill integration points change? Update references to agents or workflows.
+- Does the skill reference AGENTS.md sections? Ensure those sections exist.
 
 ### Trigger: Configuration File Changes
 
@@ -672,6 +724,7 @@ This rule activates when any of the following file patterns change:
 
 ### High Priority (Always Review)
 - `.cursor/agents/**/*` - Agent definitions
+- `.cursor/skills/**/*` - Skill definitions
 - `.cline/agents/**/*` - Agent definitions
 - `.agents/**/*` - Agent definitions
 - `agents/**/*` - Agent definitions
@@ -768,6 +821,16 @@ After any update, verify that the document remains internally consistent. Agent 
 - Priority: High  
 - Action: Remove registry entry, note in history
 - Notify: "Agent '{{name}}' removed from documentation"
+
+**New Skill Added**
+- Priority: High
+- Action: Add complete skill registry entry
+- Notify: "New skill '{{name}}' discovered and documented"
+
+**Skill Removed**
+- Priority: High
+- Action: Remove registry entry, note in history
+- Notify: "Skill '{{name}}' removed from documentation"
 
 **Major Dependency Added**
 - Priority: Medium

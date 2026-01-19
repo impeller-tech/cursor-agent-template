@@ -26,12 +26,20 @@ This template includes powerful Cursor commands in `.cursor/commands/`:
    - Defines communication styles
    - Provides example invocations
 
+3. **`/new-skill`** - Create Cursor skills integrated with the project ecosystem
+   - Creates skills following Cursor's best practices
+   - Automatically registers skills in AGENTS.md
+   - Supports both project and personal skill locations
+   - Integrates with template's documentation system
+   - Provides template-specific guidance and examples
+
 ### Living Documentation System
 
 The template introduces the concept of **AGENTS.md** - a comprehensive, auto-maintained document that serves as the single source of truth for:
 
 - Project overview and technology stack
 - All AI agents and their capabilities
+- Cursor skills and their purposes
 - Development conventions and patterns
 - Architectural decisions
 - Testing strategies
@@ -49,6 +57,7 @@ your-project/
 ├── .cursor/
 │   ├── agents/          # Cursor AI agents
 │   ├── commands/        # Custom Cursor commands (like /init)
+│   ├── skills/          # Cursor skills (project-specific)
 │   └── rules/           # Auto-maintenance rules
 ├── .agents/             # Generic agent storage
 ├── agents/              # Project-specific agents
@@ -100,6 +109,16 @@ As your project grows, create specialized agents:
 
 This will guide you through creating purpose-built agents for specific tasks like testing, refactoring, documentation, or domain-specific operations.
 
+### 5. Create Custom Skills (Optional)
+
+Create Cursor skills that integrate with your project:
+
+```
+/new-skill skill_name:code-review purpose:"Review code following project conventions"
+```
+
+This creates skills that are automatically documented in AGENTS.md and follow your project's patterns. Skills teach the AI how to perform specific tasks, while agents are specialized assistants with defined roles.
+
 ## 📚 Core Concepts
 
 ### What Are AI Agents?
@@ -142,6 +161,7 @@ This is a **starting point**, not a rigid framework. Customize it to your needs:
 - **Adjust structure** - Add or remove sections from the AGENTS.md template
 - **Configure auto-watch** - Change what triggers documentation updates
 - **Create agents** - Build agents specific to your domain or tech stack
+- **Create skills** - Build skills for specific tasks or workflows
 - **Remove what you don't need** - Not using agents? Delete those directories
 
 ### Language/Framework Specific
@@ -263,6 +283,7 @@ Ready to use this template? Follow these steps:
 - [ ] Remove or customize this README
 - [ ] Run `/init` to generate project context
 - [ ] Create your first custom agent with `/create-agent` (optional)
+- [ ] Create your first skill with `/new-skill` (optional)
 - [ ] Start building with AI assistance
 - [ ] Let AGENTS.md evolve with your project
 
